@@ -14,7 +14,7 @@ typedef struct TreeNode
 TreeNode* createNode(int data);
 TreeNode* insertNode(TreeNode* root, int data);
 TreeNode* deleteNode(TreeNode* root, int data);
-TreeNode* searchNode(TreeNode* root, int data);
+bool searchNode(TreeNode* root, int data);
 TreeNode* findMin(TreeNode* root);
 
 void inorderTraversal(TreeNode* root);

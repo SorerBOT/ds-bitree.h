@@ -23,7 +23,7 @@ TreeNode* createNode(int data)
     return node;
 }
 
-TreeNode* searchNode(TreeNode* root, int data)
+bool searchNode(TreeNode* root, int data)
 {
     if (root->data == data)
     {
@@ -31,9 +31,9 @@ TreeNode* searchNode(TreeNode* root, int data)
     }
     else if (root->data > data)
     {
-        if (root->left == NULL)
+        if (root->left == false)
         {
-            return NULL;
+            return false;
         }
         else
         {
@@ -42,9 +42,9 @@ TreeNode* searchNode(TreeNode* root, int data)
     }
     else
     {
-        if (root->right == NULL)
+        if (root->right == false)
         {
-            return NULL;
+            return false;
         }
         else
         {
@@ -63,6 +63,11 @@ TreeNode* findMin(TreeNode* root)
     {
         return root;
     }
+}
+
+void inorderTraversal(TreeNode* root)
+{
+        
 }
 
 void freeTree(TreeNode* root)
