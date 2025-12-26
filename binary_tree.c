@@ -71,7 +71,15 @@ TreeNode* findMin(TreeNode* root)
 
 void inorderTraversal(TreeNode* root)
 {
-        
+    if (root->left != NULL)
+    {
+        inorderTraversal(root);
+    }
+    else
+    {
+        printf("%d ", root->data);
+        inorderTraversal(root->right);
+    }
 }
 
 void freeTree(TreeNode* root)
