@@ -95,6 +95,19 @@ void preorderTraversal(TreeNode* root)
     }
 }
 
+void postorderTraversal(TreeNode* root)
+{
+    if (root->left != NULL)
+    {
+        inorderTraversal(root);
+    }
+    else
+    {
+        inorderTraversal(root->right);
+        printf("%d ", root->data);
+    }
+}
+
 void freeTree(TreeNode* root)
 {
     if (root == NULL)
