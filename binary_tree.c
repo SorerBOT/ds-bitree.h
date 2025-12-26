@@ -25,13 +25,17 @@ TreeNode* createNode(int data)
 
 bool searchNode(TreeNode* root, int data)
 {
-    if (root->data == data)
+    if (root == NULL)
     {
-        return root;
+        return false;
+    }
+    else if (root->data == data)
+    {
+        return true;
     }
     else if (root->data > data)
     {
-        if (root->left == false)
+        if (root->left == NULL)
         {
             return false;
         }
@@ -42,7 +46,7 @@ bool searchNode(TreeNode* root, int data)
     }
     else
     {
-        if (root->right == false)
+        if (root->right == NULL)
         {
             return false;
         }
