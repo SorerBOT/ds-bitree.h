@@ -77,7 +77,7 @@ void inorderTraversal(TreeNode* root)
 {
     if (root->left != NULL)
     {
-        inorderTraversal(root);
+        inorderTraversal(root->left);
     }
     else
     {
@@ -91,11 +91,11 @@ void preorderTraversal(TreeNode* root)
     printf("%d ", root->data);
     if (root->left != NULL)
     {
-        inorderTraversal(root);
+        preorderTraversal(root->left);
     }
     else
     {
-        inorderTraversal(root->right);
+        preorderTraversal(root->right);
     }
 }
 
@@ -103,11 +103,11 @@ void postorderTraversal(TreeNode* root)
 {
     if (root->left != NULL)
     {
-        inorderTraversal(root);
+        postorderTraversal(root);
     }
     else
     {
-        inorderTraversal(root->right);
+        postorderTraversal(root->right);
         printf("%d ", root->data);
     }
 }
