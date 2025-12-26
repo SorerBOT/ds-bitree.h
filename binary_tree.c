@@ -22,3 +22,33 @@ TreeNode* createNode(int data)
 
     return node;
 }
+
+TreeNode* searchNode(TreeNode* root, int data)
+{
+    if (root->data == data)
+    {
+        return root;
+    }
+    else if (root->data > data)
+    {
+        if (root->left == NULL)
+        {
+            return NULL;
+        }
+        else
+        {
+            return searchNode(root->left, data);
+        }
+    }
+    else
+    {
+        if (root->right == NULL)
+        {
+            return NULL;
+        }
+        else
+        {
+            return searchNode(root->right, data);
+        }
+    }
+}
