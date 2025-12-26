@@ -64,3 +64,20 @@ TreeNode* findMin(TreeNode* root)
         return root;
     }
 }
+
+void freeTree(TreeNode* root)
+{
+    if (root == NULL)
+    {
+        return;
+    }
+    else
+    {
+        TreeNode* left = root->left;
+        TreeNode* right = root->left;
+
+        free(root);
+        freeTree(left);
+        freeTree(right);
+    }
+}
