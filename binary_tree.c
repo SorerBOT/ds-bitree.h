@@ -59,13 +59,17 @@ bool searchNode(TreeNode* root, int data)
 
 TreeNode* findMin(TreeNode* root)
 {
-    if (root->left != NULL)
+    if (root == NULL)
     {
-        return findMin(root);
+        return NULL;
+    }
+    else if (root->left == NULL)
+    {
+        return root;
     }
     else
     {
-        return root;
+        return findMin(root->left);
     }
 }
 

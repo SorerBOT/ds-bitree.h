@@ -12,8 +12,10 @@ typedef struct TreeNode
 } TreeNode;
 
 TreeNode* createNode(int data);
+
 TreeNode* insertNode(TreeNode* root, int data);
 TreeNode* deleteNode(TreeNode* root, int data);
+
 bool searchNode(TreeNode* root, int data);
 TreeNode* findMin(TreeNode* root);
 
