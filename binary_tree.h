@@ -1,9 +1,10 @@
 #ifndef BINARY_TREE_H
 #define BINARY_TREE_H
 
+#include <stddef.h>
 #include <stdbool.h>
 
-typdef struct TreeNode
+typedef struct TreeNode
 {
     int data;
     struct TreeNode* left;
