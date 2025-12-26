@@ -52,3 +52,15 @@ TreeNode* searchNode(TreeNode* root, int data)
         }
     }
 }
+
+TreeNode* findMin(TreeNode* root)
+{
+    if (root->left != NULL)
+    {
+        return findMin(root);
+    }
+    else
+    {
+        return root;
+    }
+}
