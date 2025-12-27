@@ -89,5 +89,32 @@ CUNIT_TEST(min_node)
 
 CUNIT_TEST(search_node)
 {
+    TreeNode* node_10 = createNode(10);
+    node_10 = insertNode(node_10, 5);
+    node_10 = insertNode(node_10, 15);
+    node_10 = insertNode(node_10, 3);
+    node_10 = insertNode(node_10, 7);
+    node_10 = insertNode(node_10, 12);
+    node_10 = insertNode(node_10, 18);
 
+    CUNIT_ASSERT_TRUE(searchNode(node_10, 10));
+    CUNIT_ASSERT_TRUE(searchNode(node_10, 15));
+    CUNIT_ASSERT_TRUE(searchNode(node_10, 3));
+    CUNIT_ASSERT_TRUE(searchNode(node_10, 7));
+    CUNIT_ASSERT_TRUE(searchNode(node_10, 12));
+    CUNIT_ASSERT_TRUE(searchNode(node_10, 18));
+
+    CUNIT_ASSERT_FALSE(searchNode(node_10, 1));
+    CUNIT_ASSERT_FALSE(searchNode(node_10, 2));
+    CUNIT_ASSERT_FALSE(searchNode(node_10, 4));
+    CUNIT_ASSERT_FALSE(searchNode(node_10, 6));
+    CUNIT_ASSERT_FALSE(searchNode(node_10, 8));
+    CUNIT_ASSERT_FALSE(searchNode(node_10, 9));
+    CUNIT_ASSERT_FALSE(searchNode(node_10, 11));
+    CUNIT_ASSERT_FALSE(searchNode(node_10, 13));
+    CUNIT_ASSERT_FALSE(searchNode(node_10, 14));
+    CUNIT_ASSERT_FALSE(searchNode(node_10, 16));
+    CUNIT_ASSERT_FALSE(searchNode(node_10, 17));
+    CUNIT_ASSERT_FALSE(searchNode(node_10, 19));
+    CUNIT_ASSERT_FALSE(searchNode(node_10, 20));
 }
