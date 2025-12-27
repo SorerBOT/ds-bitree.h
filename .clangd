@@ -1,0 +1,16 @@
+CompileFlags:
+  Add:
+    # Force the language to C (Fixes "C++ errors" in .h files)
+    - -x
+    - c
+    
+    # Set the standard to C99
+    - -std=c99
+    
+    # Your OpenMP flags
+    - -Wall
+    - -Wextra
+    - -Wpedantic
+    - -Xpreprocessor
+    - -fopenmp
+    - -I/opt/homebrew/opt/libomp/include
