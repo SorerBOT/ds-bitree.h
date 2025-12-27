@@ -55,6 +55,77 @@ TreeNode* insertNode(TreeNode* root, int data)
     return root;
 }
 
+TreeNode* deleteNode(TreeNode* root, int data)
+{
+    if (root->data == data && root->left == NULL || root->right == NULL)
+    {
+        if (root->left == NULL && root->right == NULL)
+        {
+            free(root);
+            return NULL;
+        }
+
+        TreeNode* descendant = (root->left != NULL)
+            ? root->left
+            : root->right;
+        free(root);
+        return descendant;
+    }
+
+
+    TreeNode* current = root;
+    TreeNode* previous = root;
+
+    while (current != NULL)
+    {
+        if (current->data == data)
+        {
+            break;
+        }
+        previous = current;
+        current = (current->data > data)
+            ? current->left
+            : current->right; 
+    }
+
+    if (current == NULL)
+    {
+        return root;
+    }
+    if (current->left == NULL || current->right == NULL)
+    {
+        TreeNode* descendant = (current->left != NULL)
+                ? current->left
+                : current->right;
+        if (previous->left == current)
+        {
+            previous->left = descendant;
+        }
+        else
+        {
+            previous->right = descendant;
+        }
+        free(current);
+        return root;
+    }
+
+    TreeNode* predecessor_min_node_in_right_subtree = current;
+    if (current->right->left != NULL)
+    {
+        predecessor_min_node_in_right_subtree = current->right;
+        while (predecessor_min_node_in_right_subtree->left->left != NULL)
+        {
+            predecessor_min_node_in_right_subtree = predecessor_min_node_in_right_subtree->left;
+        }
+    }
+
+    int min_node_data = predecessor_min_node_in_right_subtree->left->data;
+    free(predecessor_min_node_in_right_subtree->left);
+    current->data = min_node_data;
+
+    return root;
+}
+
 bool searchNode(TreeNode* root, int data)
 {
     if (root == NULL)
