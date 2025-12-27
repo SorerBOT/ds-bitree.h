@@ -189,14 +189,12 @@ TreeNode* findMin(TreeNode* root)
     {
         return NULL;
     }
-    else if (root->left == NULL)
+    TreeNode* current = root;
+    while (current->left != NULL)
     {
-        return root;
+        current = current->left;
     }
-    else
-    {
-        return findMin(root->left);
-    }
+    return current;
 }
 
 void inorderTraversal(TreeNode* root)
