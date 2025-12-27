@@ -1,4 +1,6 @@
+#define CUNIT_IMPLEMENTATION
 #include "../external/cunit.h"
+
 #include "../binary_tree.h"
 
 CUNIT_TEST(create_tree)

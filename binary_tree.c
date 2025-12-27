@@ -23,6 +23,44 @@ TreeNode* createNode(int data)
     return node;
 }
 
+TreeNode* insertNode(TreeNode* root, int data)
+{
+    if (root == NULL)
+    {
+        return createNode(data);
+    }
+
+    if (root->data == data)
+    {
+        int temp = root->left->data;
+        root->left->data = data;
+        insertNode(root, temp);
+    }
+    else if (root->data > data)
+    {
+        if (root->left == NULL)
+        {
+            root->left = createNode(data);
+        }
+        else
+        {
+            insertNode(root->left, data);
+        }
+    }
+    else
+    {
+        if (root->right == NULL)
+        {
+            root->right = createNode(data);
+        }
+        else
+        {
+            insertNode(root->right, data);
+        }
+    }
+    return root;
+}
+
 bool searchNode(TreeNode* root, int data)
 {
     if (root == NULL)
