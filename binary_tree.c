@@ -65,7 +65,7 @@ TreeNode* insertNode(TreeNode* root, int data)
 
 TreeNode* deleteNode(TreeNode* root, int data)
 {
-    if (root->data == data && root->left == NULL || root->right == NULL)
+    if (root->data == data && (root->left == NULL || root->right == NULL))
     {
         if (root->left == NULL && root->right == NULL)
         {
@@ -199,6 +199,10 @@ TreeNode* findMin(TreeNode* root)
 
 void inorderTraversal(TreeNode* root)
 {
+    if (root == NULL)
+    {
+        return;
+    }
     if (root->left != NULL)
     {
         inorderTraversal(root->left);
@@ -212,12 +216,16 @@ void inorderTraversal(TreeNode* root)
 
 void preorderTraversal(TreeNode* root)
 {
+    if (root == NULL)
+    {
+        return;
+    }
     printf("%d ", root->data);
     if (root->left != NULL)
     {
         preorderTraversal(root->left);
     }
-    else
+    if (root->right != NULL)
     {
         preorderTraversal(root->right);
     }
@@ -225,15 +233,21 @@ void preorderTraversal(TreeNode* root)
 
 void postorderTraversal(TreeNode* root)
 {
+    if (root == NULL)
+    {
+        return;
+    }
     if (root->left != NULL)
     {
         postorderTraversal(root);
     }
-    else
+     
+    if (root->right != NULL)
     {
         postorderTraversal(root->right);
-        printf("%d ", root->data);
     }
+
+    printf("%d ", root->data);
 }
 
 void freeTree(TreeNode* root)
