@@ -3,6 +3,7 @@
 
 #include <stddef.h>
 #include <stdbool.h>
+#include <omp.h>
 
 typedef struct TreeNode
 {
