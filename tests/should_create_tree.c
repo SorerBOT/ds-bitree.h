@@ -125,7 +125,7 @@ CUNIT_TEST(search_node)
     CUNIT_ASSERT_FALSE(searchNode(node_10, 20));
 }
 
-CUNIT_TEST(delete_node)
+CUNIT_TEST(delete_root_two_descendants)
 {
     TreeNode* node_10 = createNode(10);
     node_10 = insertNode(node_10, 5);
@@ -162,4 +162,26 @@ CUNIT_TEST(delete_node)
 
     CUNIT_ASSERT_PTR_NULL(updated_root->right->right->right);
     CUNIT_ASSERT_PTR_NULL(updated_root->right->right->left);
+}
+
+CUNIT_TEST(delete_root_single_descendant)
+{
+    TreeNode* node_10 = createNode(10);
+    node_10 = insertNode(node_10, 5);
+    node_10 = insertNode(node_10, 3);
+    node_10 = insertNode(node_10, 7);
+
+    TreeNode* updated_root = deleteNode(node_10, 10);
+    CUNIT_ASSERT_PTR_NOT_NULL(updated_root);
+    CUNIT_ASSERT_INT_EQ(updated_root->data, 5);
+
+    CUNIT_ASSERT_PTR_NOT_NULL(updated_root->left);
+    CUNIT_ASSERT_INT_EQ(updated_root->left->data, 3);
+    CUNIT_ASSERT_PTR_NULL(updated_root->left->left);
+    CUNIT_ASSERT_PTR_NULL(updated_root->left->right);
+
+    CUNIT_ASSERT_PTR_NOT_NULL(updated_root->right);
+    CUNIT_ASSERT_INT_EQ(updated_root->right->data, 7);
+    CUNIT_ASSERT_PTR_NULL(updated_root->right->left);
+    CUNIT_ASSERT_PTR_NULL(updated_root->right->right);
 }
