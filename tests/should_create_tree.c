@@ -20,7 +20,7 @@ CUNIT_TEST(create_tree)
     CUNIT_ASSERT_PTR_NOT_NULL(node_5);
     CUNIT_ASSERT_INT_EQ(node_5->data, 5);
 
-    TreeNode* node_3 = node_5;
+    TreeNode* node_3 = node_5->left;
     CUNIT_ASSERT_PTR_NOT_NULL(node_3);
     CUNIT_ASSERT_INT_EQ(node_3->data, 3);
     CUNIT_ASSERT_PTR_NULL(node_3->left);
