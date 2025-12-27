@@ -1,6 +1,6 @@
 CC=gcc
 CFLAGS  := -std=c99 -Wall -Wextra -Wpedantic 	\
-           -Xpreprocessor -fopenmp 					\
+           -Xpreprocessor -fopenmp 				\
            -I/opt/homebrew/opt/libomp/include
 LDFLAGS := -lm -L/opt/homebrew/opt/libomp/lib -lomp
 
@@ -17,7 +17,7 @@ LIB_OBJ   := bin/binary_tree.o
 ALL_OBJS  := $(TEST_OBJS) $(LIB_OBJ)
 
 all: pre-build $(ALL_OBJS)
-	$(CC) $(ALL_OBJS) -o ./bin/test
+	$(CC) $(ALL_OBJS) -o ./bin/test $(LDFLAGS)
 
 pre-build:
 	mkdir -p ./bin
