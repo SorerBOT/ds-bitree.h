@@ -39,8 +39,16 @@ TreeNode* insertNode(TreeNode* root, int data)
     }
 
     TreeNode* current = root;
+    omp_lock_t* lock_to_unset = NULL;
+    omp_set_lock(&current->lock);
     while (true)
     {
+        if (lock_to_unset != NULL)
+        {
+            omp_unset_lock(lock_to_unset);
+        }
+        lock_to_unset = &current->lock;
+
         if (current->data >= data)
         {
             if (current->left == NULL)
@@ -50,6 +58,7 @@ TreeNode* insertNode(TreeNode* root, int data)
             }
             else
             {
+                omp_set_lock(&current->left->lock);
                 current = current->left;
                 continue;
             }
@@ -63,10 +72,15 @@ TreeNode* insertNode(TreeNode* root, int data)
             }
             else
             {
+                omp_set_lock(&current->right->lock);
                 current = current->right;
                 continue;
             }
         }
+    }
+    if (lock_to_unset != NULL)
+    {
+        omp_unset_lock(lock_to_unset);
     }
     return root;
 }
