@@ -30,26 +30,34 @@ TreeNode* insertNode(TreeNode* root, int data)
         return createNode(data);
     }
 
-    if (root->data >= data)
+    TreeNode* current = root;
+    while (true)
     {
-        if (root->left == NULL)
+        if (current->data >= data)
         {
-            root->left = createNode(data);
+            if (current->left == NULL)
+            {
+                current->left = createNode(data);
+                break;
+            }
+            else
+            {
+                current = current->left;
+                continue;
+            }
         }
         else
         {
-            insertNode(root->left, data);
-        }
-    }
-    else
-    {
-        if (root->right == NULL)
-        {
-            root->right = createNode(data);
-        }
-        else
-        {
-            insertNode(root->right, data);
+            if (current->right == NULL)
+            {
+                current->right = createNode(data);
+                break;
+            }
+            else
+            {
+                current = current->right;
+                continue;
+            }
         }
     }
     return root;
@@ -139,30 +147,38 @@ bool searchNode(TreeNode* root, int data)
     {
         return false;
     }
-    else if (root->data == data)
+
+    TreeNode* current = root;
+    while (true)
     {
-        return true;
-    }
-    else if (root->data > data)
-    {
-        if (root->left == NULL)
+
+        if (current->data == data)
         {
-            return false;
+            return true;
+        }
+        else if (current->data > data)
+        {
+            if (current->left == NULL)
+            {
+                return false;
+            }
+            else
+            {
+                current = current->left;
+                continue;
+            }
         }
         else
         {
-            return searchNode(root->left, data);
-        }
-    }
-    else
-    {
-        if (root->right == NULL)
-        {
-            return false;
-        }
-        else
-        {
-            return searchNode(root->right, data);
+            if (current->right == NULL)
+            {
+                return false;
+            }
+            else
+            {
+                current = current->right;
+                continue;
+            }
         }
     }
 }
@@ -173,14 +189,12 @@ TreeNode* findMin(TreeNode* root)
     {
         return NULL;
     }
-    else if (root->left == NULL)
+    TreeNode* current = root;
+    while (current->left != NULL)
     {
-        return root;
+        current = current->left;
     }
-    else
-    {
-        return findMin(root->left);
-    }
+    return current;
 }
 
 void inorderTraversal(TreeNode* root)
