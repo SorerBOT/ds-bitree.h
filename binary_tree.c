@@ -30,26 +30,34 @@ TreeNode* insertNode(TreeNode* root, int data)
         return createNode(data);
     }
 
-    if (root->data >= data)
+    TreeNode* current = root;
+    while (true)
     {
-        if (root->left == NULL)
+        if (current->data >= data)
         {
-            root->left = createNode(data);
+            if (current->left == NULL)
+            {
+                current->left = createNode(data);
+                break;
+            }
+            else
+            {
+                current = current->left;
+                continue;
+            }
         }
         else
         {
-            insertNode(root->left, data);
-        }
-    }
-    else
-    {
-        if (root->right == NULL)
-        {
-            root->right = createNode(data);
-        }
-        else
-        {
-            insertNode(root->right, data);
+            if (current->right == NULL)
+            {
+                current->right = createNode(data);
+                break;
+            }
+            else
+            {
+                current = current->right;
+                continue;
+            }
         }
     }
     return root;
