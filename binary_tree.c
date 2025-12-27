@@ -110,18 +110,24 @@ TreeNode* deleteNode(TreeNode* root, int data)
     }
 
     TreeNode* predecessor_min_node_in_right_subtree = current;
-    if (current->right->left != NULL)
+    TreeNode* min_node_in_right_subtree = current->right;
+
+    while (min_node_in_right_subtree->left != NULL)
     {
-        predecessor_min_node_in_right_subtree = current->right;
-        while (predecessor_min_node_in_right_subtree->left->left != NULL)
-        {
-            predecessor_min_node_in_right_subtree = predecessor_min_node_in_right_subtree->left;
-        }
+        predecessor_min_node_in_right_subtree = min_node_in_right_subtree;
+        min_node_in_right_subtree = min_node_in_right_subtree->left;
     }
 
-    int min_node_data = predecessor_min_node_in_right_subtree->left->data;
-    free(predecessor_min_node_in_right_subtree->left);
-    predecessor_min_node_in_right_subtree->left = NULL;
+    int min_node_data = min_node_in_right_subtree->data;
+    if (predecessor_min_node_in_right_subtree == current)
+    {
+        predecessor_min_node_in_right_subtree->right = min_node_in_right_subtree->right;
+    }
+    else
+    {
+        predecessor_min_node_in_right_subtree->left = min_node_in_right_subtree->right;
+    }
+    free(min_node_in_right_subtree);
     current->data = min_node_data;
 
     return root;
