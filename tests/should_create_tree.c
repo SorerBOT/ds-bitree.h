@@ -12,6 +12,7 @@ CUNIT_TEST(create_tree)
     node_10 = insertNode(node_10, 7);
     node_10 = insertNode(node_10, 12);
     node_10 = insertNode(node_10, 18);
+    node_10 = insertNode(node_10, 10);
 
     CUNIT_ASSERT_PTR_NOT_NULL(node_10);
     CUNIT_ASSERT_INT_EQ(node_10->data, 10);
@@ -30,7 +31,12 @@ CUNIT_TEST(create_tree)
     CUNIT_ASSERT_PTR_NOT_NULL(node_7);
     CUNIT_ASSERT_INT_EQ(node_7->data, 7);
     CUNIT_ASSERT_PTR_NULL(node_7->left);
-    CUNIT_ASSERT_PTR_NULL(node_7->right);
+
+    TreeNode* node_10_second = node_7->right;
+    CUNIT_ASSERT_PTR_NOT_NULL(node_10_second);
+    CUNIT_ASSERT_INT_EQ(node_10_second->data, 10);
+    CUNIT_ASSERT_PTR_NULL(node_10_second->left);
+    CUNIT_ASSERT_PTR_NULL(node_10_second->right);
 
     TreeNode* node_15 = node_10->right;
     CUNIT_ASSERT_PTR_NOT_NULL(node_15);
