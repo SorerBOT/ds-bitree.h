@@ -3,6 +3,12 @@
 
 #include "binary_tree.h"
 
+static void freeNode(TreeNode* node)
+{
+    omp_destroy_lock(&node->lock);
+    free(node);
+}
+
 TreeNode* createNode(int data)
 {
     TreeNode* node = malloc(sizeof(TreeNode));
@@ -19,6 +25,8 @@ TreeNode* createNode(int data)
         .left = NULL,
         .right = NULL,
     };
+
+    omp_init_lock(&node->lock);
 
     return node;
 }
@@ -69,14 +77,14 @@ TreeNode* deleteNode(TreeNode* root, int data)
     {
         if (root->left == NULL && root->right == NULL)
         {
-            free(root);
+            freeNode(root);
             return NULL;
         }
 
         TreeNode* descendant = (root->left != NULL)
             ? root->left
             : root->right;
-        free(root);
+        freeNode(root);
         return descendant;
     }
 
@@ -113,7 +121,7 @@ TreeNode* deleteNode(TreeNode* root, int data)
         {
             previous->right = descendant;
         }
-        free(current);
+        freeNode(current);
         return root;
     }
 
@@ -135,7 +143,7 @@ TreeNode* deleteNode(TreeNode* root, int data)
     {
         predecessor_min_node_in_right_subtree->left = min_node_in_right_subtree->right;
     }
-    free(min_node_in_right_subtree);
+    freeNode(min_node_in_right_subtree);
     current->data = min_node_data;
 
     return root;
@@ -259,10 +267,10 @@ void freeTree(TreeNode* root)
     else
     {
         TreeNode* left = root->left;
-        TreeNode* right = root->left;
+        TreeNode* right = root->right;
 
-        free(root);
         freeTree(left);
         freeTree(right);
+        freeNode(root);
     }
 }

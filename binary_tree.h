@@ -10,6 +10,7 @@ typedef struct TreeNode
     int data;
     struct TreeNode* left;
     struct TreeNode* right;
+    omp_lock_t lock;
 } TreeNode;
 
 TreeNode* createNode(int data);
