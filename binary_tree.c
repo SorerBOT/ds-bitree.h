@@ -121,6 +121,7 @@ TreeNode* deleteNode(TreeNode* root, int data)
 
     int min_node_data = predecessor_min_node_in_right_subtree->left->data;
     free(predecessor_min_node_in_right_subtree->left);
+    predecessor_min_node_in_right_subtree->left = NULL;
     current->data = min_node_data;
 
     return root;
