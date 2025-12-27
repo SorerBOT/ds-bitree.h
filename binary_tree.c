@@ -147,30 +147,38 @@ bool searchNode(TreeNode* root, int data)
     {
         return false;
     }
-    else if (root->data == data)
+
+    TreeNode* current = root;
+    while (true)
     {
-        return true;
-    }
-    else if (root->data > data)
-    {
-        if (root->left == NULL)
+
+        if (current->data == data)
         {
-            return false;
+            return true;
+        }
+        else if (current->data > data)
+        {
+            if (current->left == NULL)
+            {
+                return false;
+            }
+            else
+            {
+                current = current->left;
+                continue;
+            }
         }
         else
         {
-            return searchNode(root->left, data);
-        }
-    }
-    else
-    {
-        if (root->right == NULL)
-        {
-            return false;
-        }
-        else
-        {
-            return searchNode(root->right, data);
+            if (current->right == NULL)
+            {
+                return false;
+            }
+            else
+            {
+                current = current->right;
+                continue;
+            }
         }
     }
 }
