@@ -122,6 +122,10 @@ TreeNode* deleteNode(TreeNode* root, int data)
 
     if (current == NULL)
     {
+        if (previous != NULL)
+        {
+            omp_unset_lock(&previous->lock);
+        }
         return root;
     }
 
