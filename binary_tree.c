@@ -104,7 +104,7 @@ TreeNode* deleteNode(TreeNode* root, int data)
         {
             break;
         }
-        lock_to_unset = previous != NULL
+        lock_to_unset = (previous != NULL && previous != root)
             ? &previous->lock
             : NULL;
 
