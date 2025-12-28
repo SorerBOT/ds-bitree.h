@@ -248,10 +248,14 @@ TreeNode* findMin(TreeNode* root)
         return NULL;
     }
     TreeNode* current = root;
+    omp_set_lock(&current->lock);
     while (current->left != NULL)
     {
+        omp_set_lock(&current->left->lock);
+        omp_unset_lock(&current->lock);
         current = current->left;
     }
+    omp_unset_lock(&current->lock);
     return current;
 }
 
