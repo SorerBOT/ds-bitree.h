@@ -4,7 +4,7 @@
 #include "../external/cunit.h"
 #include "../binary_tree.h"
 
-int is_valid_tree(TreeNode* root)
+static int is_valid_tree(TreeNode* root)
 {
     int is_valid = true;
     if (root == NULL)
@@ -25,9 +25,9 @@ int is_valid_tree(TreeNode* root)
 
 CUNIT_TEST(thread_safe_insertion)
 {
-    TreeNode* tree = NULL;
+    TreeNode* tree = createNode(0);
 #pragma omp parallel for schedule(static, 6)
-    for (size_t i = 0; i < 100; ++i)
+    for (size_t i = 1; i < 100; ++i)
     {
         insertNode(tree, i);
     }
@@ -38,5 +38,37 @@ CUNIT_TEST(thread_safe_insertion)
     for (size_t i = 0; i < 100; ++i)
     {
         did_insert_everything = did_insert_everything && searchNode(tree, i);
+    }
+}
+
+CUNIT_TEST(thread_safe_deletion)
+{
+    TreeNode* tree = createNode(0);
+    for (size_t i = 1; i < 100; ++i)
+    {
+        insertNode(tree, i);
+    }
+#pragma omp parallel for schedule(static, 6)
+    for (size_t i = 0; i < 100; ++i)
+    {
+        if (i % 3 == 0)
+        {
+            deleteNode(tree, i);
+        }
+    }
+
+    CUNIT_ASSERT_TRUE(is_valid_tree(tree));
+    preorderTraversal(tree);
+    for (size_t i = 0; i < 100; ++i)
+    {
+        if (i % 3 == 0)
+        {
+            CUNIT_ASSERT_FALSE(searchNode(tree, i));
+        }
+        else
+        {
+            printf("i = %lu\n", i);
+            CUNIT_ASSERT_TRUE(searchNode(tree, i));
+        }
     }
 }
