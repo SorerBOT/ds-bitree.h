@@ -320,11 +320,15 @@ void freeTree(TreeNode* root)
     }
     else
     {
+        omp_set_lock(&root->lock);
+
         TreeNode* left = root->left;
         TreeNode* right = root->right;
 
         freeTree(left);
         freeTree(right);
+
+        omp_unset_lock(&root->lock);
         freeNode(root);
     }
 }
