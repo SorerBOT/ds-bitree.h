@@ -87,108 +87,130 @@ TreeNode* insertNode(TreeNode* root, int data)
 
 TreeNode* deleteNode(TreeNode* root, int data)
 {
+    if (root == NULL)
+    {
+        return NULL;
+    }
+
+    omp_set_lock(&root->lock);
+
     TreeNode* current = root;
     TreeNode* previous = NULL;
 
-    omp_lock_t* lock_to_unset = NULL;
-    while (current != NULL)
+    while (true)
     {
-        omp_set_lock(&current->lock);
-        if (lock_to_unset != NULL)
-        {
-            omp_unset_lock(lock_to_unset);
-            lock_to_unset = NULL;
-        }
-
         if (current->data == data)
         {
             break;
         }
-        lock_to_unset = (previous != NULL)
-            ? &previous->lock
-            : NULL;
-
-        previous = current;
-        current = (current->data > data)
+        TreeNode* descendant = (data <= current->data)
             ? current->left
             : current->right;
-    }
 
-    if (lock_to_unset != NULL)
-    {
-        omp_unset_lock(lock_to_unset);
-        lock_to_unset = NULL;
-    }
+        if (descendant == NULL)
+        {
+            if (previous != NULL)
+            {
+                omp_unset_lock(&previous->lock);
+            }
+            omp_unset_lock(&current->lock);
+            return root;
+        }
 
-    if (current == NULL)
-    {
+        omp_set_lock(&descendant->lock);
         if (previous != NULL)
         {
             omp_unset_lock(&previous->lock);
         }
-        return root;
+        previous = current;
+        current = descendant;
     }
 
+    /* Deletion of a node without descendants */
     if (current->left == NULL && current->right == NULL)
     {
         if (current == root)
         {
             omp_unset_lock(&root->lock);
-            freeNode(root);
+            freeNode(current);
             return NULL;
-        }
-    }
-    if (current->left == NULL || current->right == NULL)
-    {
-        TreeNode* descendant = (current->left != NULL)
-                ? current->left
-                : current->right;
-
-        if (current == root)
-        {
-            root->data = descendant->data;
-            root->left = descendant->left;
-            root->right = descendant->right;
-            freeNode(descendant);
-            omp_unset_lock(&root->lock);
-            return root;
         }
 
         if (previous->left == current)
         {
-            previous->left = descendant;
+            previous->left = NULL;
+            omp_unset_lock(&current->lock);
+            freeNode(current);
+            omp_unset_lock(&previous->lock);
+            return root;
         }
-        else
-        {
-            previous->right = descendant;
-        }
+
+        previous->right = NULL;
         omp_unset_lock(&current->lock);
         freeNode(current);
         omp_unset_lock(&previous->lock);
         return root;
     }
 
+    /* Deletion of a node with a single descendant */
+    if (current->left == NULL || current->right == NULL)
+    {
+        TreeNode* descendant = (current->left != NULL)
+            ? current->left
+            : current->right;
+
+        omp_set_lock(&descendant->lock);
+
+        current->data = descendant->data;
+        current->left = descendant->left;
+        current->right = descendant->right;
+
+        omp_unset_lock(&descendant->lock);
+        freeNode(descendant);
+        omp_unset_lock(&current->lock);
+        if (previous != NULL)
+        {
+            omp_unset_lock(&previous->lock);
+        }
+
+        return root;
+    }
+
+    /* Deletion of node with two descendants */
+    if (previous != NULL)
+    {
+        omp_unset_lock(&previous->lock);
+    }
     TreeNode* predecessor_min_node_in_right_subtree = current;
     TreeNode* min_node_in_right_subtree = current->right;
+    previous = NULL;
     omp_set_lock(&min_node_in_right_subtree->lock);
     while (min_node_in_right_subtree->left != NULL)
     {
+        if (previous != NULL)
+        {
+            omp_unset_lock(&previous->lock);
+        }
         omp_set_lock(&min_node_in_right_subtree->left->lock);
-        omp_unset_lock(&min_node_in_right_subtree->lock);
+        previous = min_node_in_right_subtree;
         predecessor_min_node_in_right_subtree = min_node_in_right_subtree;
         min_node_in_right_subtree = min_node_in_right_subtree->left;
     }
 
-    int min_node_data = min_node_in_right_subtree->data;
+    if (previous != NULL)
+    {
+        omp_unset_lock(&previous->lock);
+    }
+
     if (predecessor_min_node_in_right_subtree == current)
     {
-        predecessor_min_node_in_right_subtree->right = min_node_in_right_subtree->right;
+        current->right = min_node_in_right_subtree->right;
     }
     else
     {
         predecessor_min_node_in_right_subtree->left = min_node_in_right_subtree->right;
     }
-    current->data = min_node_data;
+    current->data = min_node_in_right_subtree->data;
     omp_unset_lock(&min_node_in_right_subtree->lock);
     freeNode(min_node_in_right_subtree);
     omp_unset_lock(&current->lock);
