@@ -291,15 +291,17 @@ void inorderTraversal(TreeNode* root)
     {
         return;
     }
+    omp_set_lock(&root->lock);
     if (root->left != NULL)
     {
         inorderTraversal(root->left);
     }
-    else
+    printf("%d ", root->data);
+    if (root->right != NULL)
     {
-        printf("%d ", root->data);
         inorderTraversal(root->right);
     }
+    omp_unset_lock(&root->lock);
 }
 
 void preorderTraversal(TreeNode* root)
@@ -308,6 +310,8 @@ void preorderTraversal(TreeNode* root)
     {
         return;
     }
+    omp_set_lock(&root->lock);
+
     printf("%d ", root->data);
     if (root->left != NULL)
     {
@@ -317,6 +321,8 @@ void preorderTraversal(TreeNode* root)
     {
         preorderTraversal(root->right);
     }
+
+    omp_unset_lock(&root->lock);
 }
 
 void postorderTraversal(TreeNode* root)
@@ -325,9 +331,11 @@ void postorderTraversal(TreeNode* root)
     {
         return;
     }
+    omp_set_lock(&root->lock);
+
     if (root->left != NULL)
     {
-        postorderTraversal(root);
+        postorderTraversal(root->left);
     }
      
     if (root->right != NULL)
@@ -336,6 +344,7 @@ void postorderTraversal(TreeNode* root)
     }
 
     printf("%d ", root->data);
+    omp_unset_lock(&root->lock);
 }
 
 void freeTree(TreeNode* root)
