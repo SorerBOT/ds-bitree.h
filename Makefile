@@ -1,8 +1,9 @@
 CC=gcc
-CFLAGS  := -std=c99 -Wall -Wextra -Wpedantic 	\
+CFLAGS  := -g -std=c99 -Wall -Wextra -Wpedantic	\
            -Xpreprocessor -fopenmp 				\
-           -I/opt/homebrew/opt/libomp/include
-LDFLAGS := -lm -L/opt/homebrew/opt/libomp/lib -lomp
+           -I/opt/homebrew/opt/libomp/include	\
+		   -fsanitize=address
+LDFLAGS := -lm -L/opt/homebrew/opt/libomp/lib -lomp -fsanitize=address
 
 # 1. Separate the source files by location
 TEST_SRCS := $(wildcard tests/*.c)
