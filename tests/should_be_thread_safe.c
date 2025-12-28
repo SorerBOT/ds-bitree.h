@@ -58,7 +58,6 @@ CUNIT_TEST(thread_safe_deletion)
     }
 
     CUNIT_ASSERT_TRUE(is_valid_tree(tree));
-    preorderTraversal(tree);
     for (size_t i = 0; i < 100; ++i)
     {
         if (i % 3 == 0)
@@ -67,7 +66,6 @@ CUNIT_TEST(thread_safe_deletion)
         }
         else
         {
-            printf("i = %lu\n", i);
             CUNIT_ASSERT_TRUE(searchNode(tree, i));
         }
     }

@@ -88,7 +88,7 @@ TreeNode* insertNode(TreeNode* root, int data)
 TreeNode* deleteNode(TreeNode* root, int data)
 {
     TreeNode* current = root;
-    TreeNode* previous = root;
+    TreeNode* previous = NULL;
 
     omp_lock_t* lock_to_unset = NULL;
     while (current != NULL)
@@ -104,7 +104,7 @@ TreeNode* deleteNode(TreeNode* root, int data)
         {
             break;
         }
-        lock_to_unset = (previous != NULL && previous != root)
+        lock_to_unset = (previous != NULL)
             ? &previous->lock
             : NULL;
 
@@ -125,6 +125,15 @@ TreeNode* deleteNode(TreeNode* root, int data)
         return root;
     }
 
+    if (current->left == NULL && current->right == NULL)
+    {
+        if (current == root)
+        {
+            omp_unset_lock(&root->lock);
+            freeNode(root);
+            return NULL;
+        }
+    }
     if (current->left == NULL || current->right == NULL)
     {
         TreeNode* descendant = (current->left != NULL)
@@ -133,9 +142,12 @@ TreeNode* deleteNode(TreeNode* root, int data)
 
         if (current == root)
         {
+            root->data = descendant->data;
+            root->left = descendant->left;
+            root->right = descendant->right;
+            freeNode(descendant);
             omp_unset_lock(&root->lock);
-            freeNode(root);
-            return descendant;
+            return root;
         }
 
         if (previous->left == current)
