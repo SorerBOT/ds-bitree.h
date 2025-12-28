@@ -100,14 +100,12 @@ CUNIT_TEST(thread_safe_search)
                 }
             }
 
-            // Loop 2
             #pragma omp taskloop nogroup
             for (size_t j = 1; j < N; j++)
             {
                 deleteNode(tree, j);
             }
 
-            // Loop 3
             #pragma omp taskloop nogroup
             for (size_t k = 1; k < N; k++)
             {
