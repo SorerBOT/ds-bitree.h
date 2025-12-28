@@ -18,5 +18,6 @@ if grep -q "FAILED" "$OUTPUT_FILE"; then
     exit 1
 else
     echo "Success: All tests passed."
+    rm $OUTPUT_FILE
     exit 0
 fi
