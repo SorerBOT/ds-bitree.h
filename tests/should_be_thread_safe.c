@@ -70,3 +70,8 @@ CUNIT_TEST(thread_safe_deletion)
         }
     }
 }
+
+CUNIT_TEST(thread_safe_search)
+{
+
+}

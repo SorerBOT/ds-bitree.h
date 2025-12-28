@@ -200,21 +200,25 @@ bool searchNode(TreeNode* root, int data)
     }
 
     TreeNode* current = root;
+    omp_set_lock(&current->lock);
     while (true)
     {
-
         if (current->data == data)
         {
+            omp_unset_lock(&current->lock);
             return true;
         }
         else if (current->data > data)
         {
             if (current->left == NULL)
             {
+                omp_unset_lock(&current->lock);
                 return false;
             }
             else
             {
+                omp_set_lock(&current->left->lock);
+                omp_unset_lock(&current->lock);
                 current = current->left;
                 continue;
             }
@@ -223,10 +227,13 @@ bool searchNode(TreeNode* root, int data)
         {
             if (current->right == NULL)
             {
+                omp_unset_lock(&current->lock);
                 return false;
             }
             else
             {
+                omp_set_lock(&current->right->lock);
+                omp_unset_lock(&current->lock);
                 current = current->right;
                 continue;
             }
